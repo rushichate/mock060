@@ -45,7 +45,7 @@
     const price= document.getElementById("price").value
 
     const payload = {name,description,category,image,location,price}
-         fetch("https://breakable-jay-teddy.cyclic.app/posts/add",{
+         fetch("http://localhost:8000/posts/add",{
             method:"POST",
             headers:{
                 "Content-type":"application/json",

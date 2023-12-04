@@ -13,7 +13,7 @@
         const container = document.getElementById("main");
 
         function fetchAndDisplay() {
-            fetch("https://breakable-jay-teddy.cyclic.app/posts/", {
+            fetch("http://localhost:8000/posts/", {
                 method: "GET",
                 headers: {
                     "Content-type": "application/json",
@@ -63,7 +63,7 @@
         }
 
         function editClassified(id) {
-            fetch(`https://breakable-jay-teddy.cyclic.app/posts/${id}`, {
+            fetch(`http://localhost:8000/posts/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-type": "application/json",
@@ -88,7 +88,7 @@
             const confirmDelete = confirm("Are you sure you want to delete this classified?");
 
             if (confirmDelete) {
-                fetch(`https://breakable-jay-teddy.cyclic.app/posts/${id}`, {
+                fetch(`http://localhost:8000/posts/${id}`, {
                     method: "DELETE",
                     headers: {
                         "Content-type": "application/json",
