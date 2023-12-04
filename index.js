@@ -13,7 +13,7 @@ app.get("/",(req,res)=>{
     res.json({messege:"Welcome To OLX APP"})
 })
 app.use("/users",userRouter)
-app.use(verify)
+// app.use(verify)
 app.use("/posts",postRouter)
 
 app.listen(process.env.port,async()=>{

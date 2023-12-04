@@ -55,7 +55,7 @@
            </div>
          </div>
     </div>
-     <a href=""></a>
+     <a href="./frontend/post.html">Go to Post page</a>
 </body>
 <script>
       const loginForm = document.getElementById("loginForm")
@@ -82,7 +82,7 @@
         const email = document.getElementById("logEmail").value
         const password = document.getElementById("logPass").value
         const payload = {email,password}
-        fetch("http://localhost:8000/users/login",{
+        fetch("https://breakable-jay-teddy.cyclic.app/users/login",{
             method:"POST",
             headers:{
                 "Content-type":"application/json"
@@ -110,7 +110,7 @@
             return alert("Password and Confirm Password should match")
         }
         const signPayload = {email,password} 
-         fetch("http://localhost:8000/users/signup",{
+         fetch("https://breakable-jay-teddy.cyclic.app/users/signup",{
             method:"POST",
             headers:{
                 "Content-type":"application/json"
