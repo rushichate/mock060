@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Posts</title>
+</head>
+<body>
+    <div id="main"></div>
+    
+    <script>
+        const token = localStorage.getItem("token");
+        const container = document.getElementById("main");
+
+        function fetchAndDisplay() {
+            fetch("http://localhost:8000/posts/", {
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json",
+                    'Authorization': `${token}`
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data) {
+                    display(data);
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }
+
+        function display(classifieds) {
+            container.innerHTML = "";
+
+            classifieds.forEach(classified => {
+                const card = document.createElement("div");
+                card.innerHTML = `
+                    <img src="${classified.image}" alt="${classified.name}">
+                    <h3>${classified.name}</h3>
+                    <p>${classified.description}</p>
+                    <p>Category: ${classified.category}</p>
+                    <p>Location: ${classified.location}</p>
+                    <p>Date: ${classified.postedAt}</p>
+                    <p>Price: ${classified.price}</p>
+                    <button data-id="${classified._id}" data-action="edit">Edit</button>
+                    <button data-id="${classified._id}" data-action="delete">Delete</button>
+                `;
+                container.appendChild(card);
+
+                // Attach event listeners inside the context of the card element
+                const editButton = card.querySelector(`button[data-id="${classified._id}"][data-action="edit"]`);
+                const deleteButton = card.querySelector(`button[data-id="${classified._id}"][data-action="delete"]`);
+
+                if (editButton) {
+                    editButton.addEventListener("click", () => editClassified(classified._id));
+                }
+
+                if (deleteButton) {
+                    deleteButton.addEventListener("click", () => deleteClassified(classified._id));
+                }
+            });
+        }
+
+        function editClassified(id) {
+            fetch(`http://localhost:8000/posts/${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json",
+                    'Authorization': `${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const editedClassified = data.classified;
+                    console.log("Editing Classified:", editedClassified);
+                } else {
+                    alert("Failed to fetch classified for editing. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching classified for editing:", error);
+            });
+        }
+
+        function deleteClassified(id) {
+            const confirmDelete = confirm("Are you sure you want to delete this classified?");
+
+            if (confirmDelete) {
+                fetch(`http://localhost:8000/posts/${id}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-type": "application/json",
+                        'Authorization': `${token}`
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Classified deleted successfully");
+                        fetchAndDisplay();
+                    } else {
+                        alert("Failed to delete classified. Please try again.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error deleting classified:", error);
+                });
+            }
+        }
+
+        fetchAndDisplay();
+    </script>
+</body>
+</html>

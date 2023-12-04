@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post</title>
+</head>
+<body>
+    <div id="post">
+        <h2>Post Classifieds</h2>
+        <form id="post-data">
+            <label for="name">Name:</label>
+            <input type="text" id="name">
+            <label for="discription">Description:</label>
+            <input type="text" id="des">
+            <label for="category">Category:</label>
+            <select name="" id="category">
+                <option value="Clothing">Clothing</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Other">Other</option>
+            </select>
+            <label for="image">Image URL:</label>
+            <input type="text" id="img">
+            <label for="loaction">Location:</label>
+            <input type="text" id="location">
+            <label for="price">Price</label>
+            <input type="number" id="price">
+            <button type="submit">Add Post</button>
+        </form>
+    </div>
+    <a href="./browse.html">Click here To Browse page</a>
+    
+</body>
+<script>
+     const token = localStorage.getItem("token")
+    const postData = document.getElementById("post-data")
+    postData.addEventListener("submit",function(e){
+        e.preventDefault()
+    const name = document.getElementById("name").value
+    const description= document.getElementById("des").value
+    const category= document.getElementById("category").value
+    const image= document.getElementById("img").value
+    const location= document.getElementById("location").value
+    const price= document.getElementById("price").value
+
+    const payload = {name,description,category,image,location,price}
+         fetch("http://localhost:8000/posts/add",{
+            method:"POST",
+            headers:{
+                "Content-type":"application/json",
+                'Authorization': `${token}`
+            },
+            body:JSON.stringify(payload)
+         }).then(res=>res.json())
+         .then(res=>{
+            alert(res.message)
+            window.location.reload()
+         }).catch((error)=>{
+            console.log("Error during signup",error)
+         })
+    })
+</script>
+</html>
